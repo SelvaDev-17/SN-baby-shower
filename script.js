@@ -50,41 +50,65 @@ document.getElementById('blessing-input').addEventListener('keypress', function(
     if (e.key === 'Enter') addBlessing();
 });
 
-// Gender Polling logic
-let votesBoy = 0;
-let votesGirl = 0;
+// Gender Polling logic with Firebase
+let hasVoted = false;
 
-function voteGender(gender) {
-    if (gender === 'boy') votesBoy++;
-    else if (gender === 'girl') votesGirl++;
+async function voteGender(gender) {
+    if (hasVoted) return;
+    hasVoted = true;
     
-    const total = votesBoy + votesGirl;
-    const percentBoy = Math.round((votesBoy / total) * 100);
-    const percentGirl = Math.round((votesGirl / total) * 100);
-    
-    // Show results section
+    // Show results section immediately to prepare for animation
     const resultsDiv = document.getElementById('poll-results');
     const barBoy = document.getElementById('bar-boy');
     const barGirl = document.getElementById('bar-girl');
     
-    // Fix animation by setting initial width to 0% and forcing a layout reflow
     if (resultsDiv.style.display === 'none') {
         barBoy.style.width = '0%';
         barGirl.style.width = '0%';
         resultsDiv.style.display = 'block';
-        
-        // Force reflow: This tells the browser to immediately calculate the 0% width 
-        // before we set the target percentage, making the CSS transition work every time.
-        void resultsDiv.offsetHeight;
+        void resultsDiv.offsetHeight; 
     }
     
-    // Set the new widths
-    barBoy.style.width = percentBoy + '%';
-    barBoy.textContent = `Boy: ${percentBoy}%`;
-    
-    barGirl.style.width = percentGirl + '%';
-    barGirl.textContent = `Girl: ${percentGirl}%`;
+    // Save vote to Firebase
+    try {
+        const pollRef = db.collection('poll').doc('results');
+        if (gender === 'boy') {
+            await pollRef.set({ boy: firebase.firestore.FieldValue.increment(1) }, { merge: true });
+        } else {
+            await pollRef.set({ girl: firebase.firestore.FieldValue.increment(1) }, { merge: true });
+        }
+    } catch (e) {
+        console.error("Error saving vote to Firebase: ", e);
+    }
 }
+
+// Listen for real-time poll updates from Firebase
+db.collection('poll').doc('results').onSnapshot((doc) => {
+    if (doc.exists) {
+        const data = doc.data();
+        const totalVotesBoy = data.boy || 0;
+        const totalVotesGirl = data.girl || 0;
+        const total = totalVotesBoy + totalVotesGirl;
+        
+        if (total > 0) {
+            const percentBoy = Math.round((totalVotesBoy / total) * 100);
+            const percentGirl = Math.round((totalVotesGirl / total) * 100);
+            
+            const resultsDiv = document.getElementById('poll-results');
+            const barBoy = document.getElementById('bar-boy');
+            const barGirl = document.getElementById('bar-girl');
+            
+            // Only animate the bars if the results section has been revealed to the user
+            if (resultsDiv.style.display !== 'none') {
+                barBoy.style.width = percentBoy + '%';
+                barBoy.textContent = `Boy: ${percentBoy}%`;
+                
+                barGirl.style.width = percentGirl + '%';
+                barGirl.textContent = `Girl: ${percentGirl}%`;
+            }
+        }
+    }
+});
 
 // Guess Name logic
 async function guessName() {
