@@ -4,8 +4,8 @@
     --blue: #e6f2ff;
     --dark-blue: #99ccff;
     --text-color: #5a5a5a;
-    --title-font: 'Pacifico', cursive;
-    --body-font: 'Quicksand', sans-serif;
+    --title-font: 'Playfair Display', serif;
+    --body-font: 'Poppins', sans-serif;
     --glass-bg: rgba(255, 255, 255, 0.6);
     --glass-border: rgba(255, 255, 255, 0.8);
 }
