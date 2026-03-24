@@ -17,39 +17,6 @@ const firebaseConfig = {
 const app = firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-// Bless the Baby functionality
-async function addBlessing() {
-    const input = document.getElementById('blessing-input');
-    const msg = input.value.trim();
-    const feedback = document.getElementById('blessing-feedback');
-    
-    if (msg !== "") {
-        input.value = ''; // Clear input early
-        try {
-            await db.collection("blessings").add({
-                text: msg,
-                createdAt: firebase.firestore.FieldValue.serverTimestamp()
-            });
-            if (feedback) {
-                feedback.textContent = "Thank you for your lovely blessing! 💖";
-                feedback.style.color = "var(--dark-pink)";
-                setTimeout(() => { feedback.textContent = ''; }, 4000);
-            }
-        } catch (e) {
-            console.error("Error adding blessing: ", e);
-            if (feedback) {
-                feedback.textContent = "Something went wrong. Please try again.";
-                feedback.style.color = "#ff8da1";
-            }
-        }
-    }
-}
-
-// Allow Enter key to submit blessing
-document.getElementById('blessing-input').addEventListener('keypress', function(e) {
-    if (e.key === 'Enter') addBlessing();
-});
-
 // Gender Polling logic with Firebase
 let hasVoted = false;
 let localVotesBoy = 0;
@@ -157,9 +124,12 @@ async function guessName() {
 }
 
 // Allow Enter key to submit name guess
-document.getElementById('name-input').addEventListener('keypress', function(e) {
-    if (e.key === 'Enter') guessName();
-});
+const nameInputEl = document.getElementById('name-input');
+if (nameInputEl) {
+    nameInputEl.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') guessName();
+    });
+}
 
 // Theme Decorator logic
 function changeTheme(theme) {
