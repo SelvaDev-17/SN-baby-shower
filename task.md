@@ -1,0 +1,27 @@
+# Baby Shower Announcement Webpage Tasks
+
+- [ ] Project Setup
+  - [ ] Initialize `index.html`
+  - [ ] Initialize `style.css`
+  - [ ] Initialize `script.js`
+- [ ] UI/UX Design (CSS)
+  - [ ] Core layout and responsive design (mobile-first)
+  - [ ] Pastel gradient background animation
+  - [ ] Floating and bouncing decorative elements styling
+- [ ] Content Implementation (HTML)
+  - [ ] Header (Titles, Parents' names, Background)
+  - [ ] Section 1: Bless the Baby (Input and messages container)
+  - [ ] Section 2: Gender Guess Poll (Buttons and progress bars)
+  - [ ] Section 3: Guess the Name (Input, hints, and list)
+  - [ ] Section 4: Surprise Box (Box UI and hidden message)
+  - [ ] Footer and Music toggle
+- [ ] Interactivity (JavaScript)
+  - [ ] Bless the Baby functionality (Add to list)
+  - [ ] Gender Guess Poll logic (Update progress bars)
+  - [ ] Guess the Name validation (S / N rules)
+  - [ ] Surprise Box interaction (Toggle reveal)
+  - [ ] Soft music toggle
+- [ ] Verification
+  - [ ] Test layout on mobile and desktop
+  - [ ] Verify animations
+  - [ ] Verify JS functionality

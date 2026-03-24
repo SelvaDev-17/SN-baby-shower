@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Baby Shower | Naresh & Swarna</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Top Fixed Music Toggle -->
+    <div class="music-toggle" onclick="toggleMusic()">
+        <span id="music-icon">🎵 Play Music</span>
+    </div>
+
+    <!-- Floating Elements -->
+    <div class="floating-elements">
+        <span class="float-item float-1">🧸</span>
+        <span class="float-item float-2">🍼</span>
+        <span class="float-item float-3">🎈</span>
+        <span class="float-item float-4">⭐</span>
+        <span class="float-item float-5">🌙</span>
+        <span class="float-item float-6">🎀</span>
+        <span class="float-item float-7">🧸</span>
+        <span class="float-item float-8">🎈</span>
+    </div>
+
+    <!-- Background Gradient element -->
+    <div class="background-gradient"></div>
+
+    <main class="container">
+        <!-- HEADER SECTION -->
+        <header class="hero-section">
+            <h2 class="subtitle">Expecting a Miracle</h2>
+            <h1 class="title">Our Little Miracle <br> is on the Way</h1>
+            <div class="parents-box">
+                <p>Naresh <span>&</span> Swarna</p>
+            </div>
+            <div class="header-animation">
+                👶
+            </div>
+        </header>
+
+        <!-- MESSAGE FROM PARENTS -->
+        <section id="parents-message" class="glass-card" style="padding: 3rem 2rem; margin-bottom: 1rem; background: rgba(255, 255, 255, 0.4);">
+            <p style="font-family: var(--title-font); font-size: 2.2rem; color: #ff6b81; line-height: 1.5; text-shadow: 0 0 10px rgba(255,255,255,0.8);">
+                "This little life is already so loved... <br> we can't wait to meet you."
+            </p>
+        </section>
+
+        <!-- SECTION 1: BLESS THE BABY -->
+        <section id="blessings" class="glass-card">
+            <h2>Bless the Baby ✨</h2>
+            <div class="input-group">
+                <input type="text" id="blessing-input" placeholder="Leave a little blessing...">
+                <button onclick="addBlessing()">Send</button>
+            </div>
+            <div id="blessings-wall" class="blessings-wall">
+                <!-- Messages will appear here -->
+            </div>
+        </section>
+
+        <!-- SECTION 2: GENDER GUESS POLL -->
+        <section id="gender-poll" class="glass-card">
+            <h2>Boy or Girl? 💖💙</h2>
+            <p>What's your guess?</p>
+            <div class="poll-buttons">
+                <button class="btn-boy" onclick="voteGender('boy')">Boy 💙</button>
+                <button class="btn-girl" onclick="voteGender('girl')">Girl 💖</button>
+            </div>
+            <div class="poll-results" id="poll-results" style="display:none;">
+                <div class="bar-container">
+                    <div class="bar bar-boy" id="bar-boy">50%</div>
+                </div>
+                <div class="bar-container">
+                    <div class="bar bar-girl" id="bar-girl">50%</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: GUESS THE NAME -->
+        <section id="guess-name" class="glass-card">
+            <h2>Guess the Name 💭</h2>
+            <p class="hint">Boy: Starts with 'S' | Girl: Starts with 'N'</p>
+            <div class="input-group">
+                <input type="text" id="name-input" placeholder="Type your guess...">
+                <button onclick="guessName()">Guess</button>
+            </div>
+            <p id="name-feedback" class="feedback"></p>
+            <ul id="guesses-list" class="guesses-list">
+                <!-- Guesses will appear here -->
+            </ul>
+        </section>
+
+        <!-- SECTION 4: THEME DECORATOR -->
+        <section id="theme-decorator" class="glass-card">
+            <h2>Decorate the Page 🎨</h2>
+            <p>Choose your theme!</p>
+            <div class="theme-buttons">
+                <button class="btn-theme-pink" onclick="changeTheme('pink')">Pink Theme 💖</button>
+                <button class="btn-theme-blue" onclick="changeTheme('blue')">Blue Theme 💙</button>
+            </div>
+        </section>
+
+        <!-- SECTION 5: SURPRISE BOX -->
+        <section id="surprise" class="surprise-section glass-card">
+            <h2>A Little Secret...</h2>
+            <div class="box-container" onclick="openBox()">
+                <div class="surprise-box" id="surprise-box">
+                    🎁
+                </div>
+                <p id="box-instruction" class="tap-text">Tap to Open</p>
+            </div>
+            <div id="hidden-message" class="hidden-message">
+                "A tiny heartbeat, a big dream 💫"
+            </div>
+        </section>
+        
+        <!-- FOOTER -->
+        <footer>
+            <p>With love, Naresh & Swarna 💕</p>
+        </footer>
+    </main>
+
+    <audio id="bg-music" loop>
+        <source src="music1.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Firebase Compat Support for Local Directories -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore-compat.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
