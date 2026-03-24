@@ -64,26 +64,26 @@ function voteGender(gender) {
     
     // Show results section
     const resultsDiv = document.getElementById('poll-results');
+    const barBoy = document.getElementById('bar-boy');
+    const barGirl = document.getElementById('bar-girl');
     
-    // Fix animation by setting initial width to 0% if newly shown
-    const isHidden = resultsDiv.style.display === 'none';
-    if (isHidden) {
-        document.getElementById('bar-boy').style.width = '0%';
-        document.getElementById('bar-girl').style.width = '0%';
+    // Fix animation by setting initial width to 0% and forcing a layout reflow
+    if (resultsDiv.style.display === 'none') {
+        barBoy.style.width = '0%';
+        barGirl.style.width = '0%';
         resultsDiv.style.display = 'block';
+        
+        // Force reflow: This tells the browser to immediately calculate the 0% width 
+        // before we set the target percentage, making the CSS transition work every time.
+        void resultsDiv.offsetHeight;
     }
     
-    // Allow browser to render display:block before transitioning width
-    setTimeout(() => {
-        const barBoy = document.getElementById('bar-boy');
-        const barGirl = document.getElementById('bar-girl');
-        
-        barBoy.style.width = percentBoy + '%';
-        barBoy.textContent = `Boy: ${percentBoy}%`;
-        
-        barGirl.style.width = percentGirl + '%';
-        barGirl.textContent = `Girl: ${percentGirl}%`;
-    }, 10);
+    // Set the new widths
+    barBoy.style.width = percentBoy + '%';
+    barBoy.textContent = `Boy: ${percentBoy}%`;
+    
+    barGirl.style.width = percentGirl + '%';
+    barGirl.textContent = `Girl: ${percentGirl}%`;
 }
 
 // Guess Name logic
