@@ -323,18 +323,10 @@ button:hover {
 }
 
 .btn-boy {
-    background: linear-gradient(135deg, #ffb3c6, #ff8da1);
-    box-shadow: 0 10px 25px rgba(92, 160, 242, 0.4);
+    background: linear-gradient(135deg, var(--dark-blue), #5ca0f2);
+    box-shadow: 0 4px 15px rgba(92, 160, 242, 0.4);
 }
-.btn-boy::after { background: linear-gradient(135deg, #ff8da1, #ffb3c6); }
-.btn-boy:hover { box-shadow: 0 12px 30px rgba(92, 160, 242, 0.6); }
-
-.btn-girl {
-    background: linear-gradient(135deg, #ffb3c6, #ff8da1);
-    box-shadow: 0 10px 25px rgba(255, 174, 189, 0.6);
-}
-.btn-girl::after { background: linear-gradient(135deg, #ff8da1, #ffb3c6); }
-.btn-girl:hover { box-shadow: 0 12px 30px rgba(255, 174, 189, 0.8); }
+.btn-boy:hover { box-shadow: 0 6px 20px rgba(92, 160, 242, 0.6); }
 
 .poll-results {
     margin-top: 1.5rem;
@@ -342,13 +334,13 @@ button:hover {
 
 .bar-container {
     width: 100%;
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.5);
     border-radius: 50px;
     margin-bottom: 0.8rem;
-    height: 36px;
+    height: 30px;
     overflow: hidden;
     position: relative;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
 }
 
 .bar {
@@ -358,14 +350,14 @@ button:hover {
     align-items: center;
     justify-content: center;
     color: white;
-    font-weight: 700;
-    font-size: 1rem;
+    font-weight: bold;
+    font-size: 0.9rem;
     transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
     width: 0%;
 }
 
-.bar-boy { background: linear-gradient(90deg, #74b9ff, #0984e3); }
-.bar-girl { background: linear-gradient(90deg, #ff9eb5, #ff7696); }
+.bar-boy { background: linear-gradient(90deg, var(--dark-blue), #5ca0f2); }
+.bar-girl { background: linear-gradient(90deg, var(--dark-pink), #ff8da1); }
 
 /* Guess Name */
 .hint {
