@@ -21,6 +21,7 @@ const db = firebase.firestore();
 async function addBlessing() {
     const input = document.getElementById('blessing-input');
     const msg = input.value.trim();
+    const feedback = document.getElementById('blessing-feedback');
     
     if (msg !== "") {
         input.value = ''; // Clear input early
@@ -29,23 +30,20 @@ async function addBlessing() {
                 text: msg,
                 createdAt: firebase.firestore.FieldValue.serverTimestamp()
             });
+            if (feedback) {
+                feedback.textContent = "Thank you for your lovely blessing! 💖";
+                feedback.style.color = "var(--dark-pink)";
+                setTimeout(() => { feedback.textContent = ''; }, 4000);
+            }
         } catch (e) {
             console.error("Error adding blessing: ", e);
+            if (feedback) {
+                feedback.textContent = "Something went wrong. Please try again.";
+                feedback.style.color = "#ff8da1";
+            }
         }
     }
 }
-
-// Listen for real-time updates to blessings
-db.collection("blessings").orderBy("createdAt", "desc").onSnapshot((snapshot) => {
-    const wall = document.getElementById('blessings-wall');
-    wall.innerHTML = '';
-    snapshot.forEach((doc) => {
-        const blessingTag = document.createElement('div');
-        blessingTag.className = 'blessing-msg';
-        blessingTag.textContent = `"${doc.data().text}"`;
-        wall.appendChild(blessingTag);
-    });
-});
 
 // Allow Enter key to submit blessing
 document.getElementById('blessing-input').addEventListener('keypress', function(e) {
@@ -107,23 +105,12 @@ async function guessName() {
                 name: name,
                 createdAt: firebase.firestore.FieldValue.serverTimestamp()
             });
+            setTimeout(() => { feedback.textContent = ''; }, 4000);
         } catch (e) {
             console.error("Error adding name guess: ", e);
         }
     }
 }
-
-// Listen for real-time updates to name guesses
-db.collection("nameGuesses").orderBy("createdAt", "asc").onSnapshot((snapshot) => {
-    const list = document.getElementById('guesses-list');
-    list.innerHTML = '';
-    snapshot.forEach((doc) => {
-        const guessTag = document.createElement('li');
-        guessTag.className = 'guess-tag';
-        guessTag.textContent = doc.data().name;
-        list.appendChild(guessTag);
-    });
-});
 
 // Allow Enter key to submit name guess
 document.getElementById('name-input').addEventListener('keypress', function(e) {
