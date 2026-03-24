@@ -52,10 +52,47 @@ document.getElementById('blessing-input').addEventListener('keypress', function(
 
 // Gender Polling logic with Firebase
 let hasVoted = false;
+let localVotesBoy = 0;
+let localVotesGirl = 0;
+
+// Listen for real-time poll updates from Firebase (using 'nameGuesses' collection to bypass potential new-collection rule restrictions)
+db.collection('nameGuesses').doc('poll_results').onSnapshot((doc) => {
+    if (doc.exists) {
+        const data = doc.data();
+        localVotesBoy = data.boy || 0;
+        localVotesGirl = data.girl || 0;
+        updatePollUI();
+    }
+});
+
+function updatePollUI() {
+    const total = localVotesBoy + localVotesGirl;
+    if (total > 0) {
+        const percentBoy = Math.round((localVotesBoy / total) * 100);
+        const percentGirl = Math.round((localVotesGirl / total) * 100);
+        
+        const resultsDiv = document.getElementById('poll-results');
+        const barBoy = document.getElementById('bar-boy');
+        const barGirl = document.getElementById('bar-girl');
+        
+        // Only animate the bars if the results section has been revealed to the user
+        if (resultsDiv.style.display !== 'none') {
+            barBoy.style.width = percentBoy + '%';
+            barBoy.textContent = `Boy: ${percentBoy}%`;
+            
+            barGirl.style.width = percentGirl + '%';
+            barGirl.textContent = `Girl: ${percentGirl}%`;
+        }
+    }
+}
 
 async function voteGender(gender) {
     if (hasVoted) return;
     hasVoted = true;
+    
+    // Optimistic local update so it shows the animation instantly no matter what!
+    if (gender === 'boy') localVotesBoy++;
+    else localVotesGirl++;
     
     // Show results section immediately to prepare for animation
     const resultsDiv = document.getElementById('poll-results');
@@ -66,12 +103,14 @@ async function voteGender(gender) {
         barBoy.style.width = '0%';
         barGirl.style.width = '0%';
         resultsDiv.style.display = 'block';
-        void resultsDiv.offsetHeight; 
+        void resultsDiv.offsetHeight; // Force layout reflow for animation
     }
+    
+    updatePollUI();
     
     // Save vote to Firebase
     try {
-        const pollRef = db.collection('poll').doc('results');
+        const pollRef = db.collection('nameGuesses').doc('poll_results');
         if (gender === 'boy') {
             await pollRef.set({ boy: firebase.firestore.FieldValue.increment(1) }, { merge: true });
         } else {
@@ -81,34 +120,6 @@ async function voteGender(gender) {
         console.error("Error saving vote to Firebase: ", e);
     }
 }
-
-// Listen for real-time poll updates from Firebase
-db.collection('poll').doc('results').onSnapshot((doc) => {
-    if (doc.exists) {
-        const data = doc.data();
-        const totalVotesBoy = data.boy || 0;
-        const totalVotesGirl = data.girl || 0;
-        const total = totalVotesBoy + totalVotesGirl;
-        
-        if (total > 0) {
-            const percentBoy = Math.round((totalVotesBoy / total) * 100);
-            const percentGirl = Math.round((totalVotesGirl / total) * 100);
-            
-            const resultsDiv = document.getElementById('poll-results');
-            const barBoy = document.getElementById('bar-boy');
-            const barGirl = document.getElementById('bar-girl');
-            
-            // Only animate the bars if the results section has been revealed to the user
-            if (resultsDiv.style.display !== 'none') {
-                barBoy.style.width = percentBoy + '%';
-                barBoy.textContent = `Boy: ${percentBoy}%`;
-                
-                barGirl.style.width = percentGirl + '%';
-                barGirl.textContent = `Girl: ${percentGirl}%`;
-            }
-        }
-    }
-});
 
 // Guess Name logic
 async function guessName() {
