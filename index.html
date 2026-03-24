@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Baby Shower | Naresh & Swarna</title>
-    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;600;700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <!-- Top Fixed Music Toggle -->
     <div class="music-toggle" onclick="toggleMusic()">
@@ -32,7 +35,7 @@
         <!-- HEADER SECTION -->
         <header class="hero-section">
             <h2 class="subtitle">Expecting a Miracle</h2>
-            <h1 class="title">Our Little Miracle <br> is on the Way</h1>
+            <h1 class="title">Be a Part of Baby NS’s <br>First Big Decision 💫</h1>
             <div class="parents-box">
                 <p>Naresh <span>&</span> Swarna</p>
             </div>
@@ -42,21 +45,15 @@
         </header>
 
         <!-- MESSAGE FROM PARENTS -->
-        <section id="parents-message" class="glass-card" style="padding: 3rem 2rem; margin-bottom: 1rem; background: rgba(255, 255, 255, 0.4);">
-            <p style="font-family: var(--title-font); font-size: 2.2rem; color: #ff6b81; line-height: 1.5; text-shadow: 0 0 10px rgba(255,255,255,0.8);">
-                "This little life is already so loved... <br> we can't wait to meet you."
+        <section id="parents-message" class="glass-card"
+            style="padding: 3rem 2rem; margin-bottom: 1rem; background: rgba(255, 255, 255, 0.4);">
+            <p
+                style="font-family: var(--title-font); font-size: 2.2rem; color: #ff6b81; line-height: 1.5; text-shadow: 0 0 10px rgba(255,255,255,0.8);">
+                "As we await our little miracle, <br>we invite you to share your love through a name… 🤍"
             </p>
         </section>
 
-        <!-- SECTION 1: BLESS THE BABY -->
-        <section id="blessings" class="glass-card">
-            <h2>Bless the Baby ✨</h2>
-            <div class="input-group">
-                <input type="text" id="blessing-input" placeholder="Leave a little blessing...">
-                <button onclick="addBlessing()">Send</button>
-            </div>
-            <p id="blessing-feedback" class="feedback"></p>
-        </section>
+
 
         <!-- SECTION 2: GENDER GUESS POLL -->
         <section id="gender-poll" class="glass-card">
@@ -79,12 +76,21 @@
         <!-- SECTION 3: GUESS THE NAME -->
         <section id="guess-name" class="glass-card">
             <h2>Guess the Name 💭</h2>
-            <p class="hint">Boy: Starts with 'S' | Girl: Starts with 'N'</p>
+            <p class="hint" style="line-height: 1.6; margin-bottom: 1.5rem;">
+                First — take a sweet guess<br>
+                ✨ Boy or Girl?<br><br>
+                ✨ Boy — a name starting with S<br>
+                ✨ Girl — a name starting with N
+            </p>
             <div class="input-group">
                 <input type="text" id="name-input" placeholder="Type your guess...">
                 <button onclick="guessName()">Guess</button>
             </div>
             <p id="name-feedback" class="feedback"></p>
+            <div class="guess-footer" style="margin-top: 1.5rem; font-style: italic; color: #666; font-size: 0.95rem; line-height: 1.5;">
+                <p>"Your suggestion might become a name<br>we cherish forever ❤️"</p>
+                <p style="margin-top: 1rem;">"And if your name is the one we choose,<br>a little gift from baby NS will be waiting for you ✨"</p>
+            </div>
         </section>
 
         <!-- SECTION 4: THEME DECORATOR -->
@@ -110,7 +116,7 @@
                 "A tiny heartbeat, a big dream 💫"
             </div>
         </section>
-        
+
         <!-- FOOTER -->
         <footer>
             <p>With love, Naresh & Swarna 💕</p>
@@ -126,4 +132,5 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore-compat.js"></script>
     <script src="script.js"></script>
 </body>
+
 </html>
