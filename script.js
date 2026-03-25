@@ -57,6 +57,9 @@ async function voteGender(gender) {
     if (hasVoted) return;
     hasVoted = true;
     
+    // Change theme based on guess!
+    changeTheme(gender === 'boy' ? 'blue' : 'pink');
+    
     // Optimistic local update so it shows the animation instantly no matter what!
     if (gender === 'boy') localVotesBoy++;
     else localVotesGirl++;
