@@ -1,7 +1,5 @@
-// Check if firebase is defined
-if (typeof firebase === 'undefined') {
-    console.error('Firebase SDK not loaded. Ensure you have internet connection and the script tags are in index.html.');
-}
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+import { getFirestore, collection, addDoc, setDoc, doc, onSnapshot, increment, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyAMCwCjCSFYCf5OP3yY4fl4-k-Vq5wj7XY",
@@ -14,8 +12,8 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
 // Gender Polling logic with Firebase
 let hasVoted = false;
@@ -23,9 +21,9 @@ let localVotesBoy = 0;
 let localVotesGirl = 0;
 
 // Listen for real-time poll updates from Firebase (using 'nameGuesses' collection to bypass potential new-collection rule restrictions)
-db.collection('nameGuesses').doc('poll_results').onSnapshot((doc) => {
-    if (doc.exists) {
-        const data = doc.data();
+onSnapshot(doc(db, 'nameGuesses', 'poll_results'), (snap) => {
+    if (snap.exists()) {
+        const data = snap.data();
         localVotesBoy = data.boy || 0;
         localVotesGirl = data.girl || 0;
         updatePollUI();
@@ -53,12 +51,13 @@ function updatePollUI() {
     }
 }
 
-async function voteGender(gender) {
+// Attach to window since we are now in an ES module
+window.voteGender = async function(gender) {
     if (hasVoted) return;
     hasVoted = true;
     
     // Change theme based on guess!
-    changeTheme(gender === 'boy' ? 'blue' : 'pink');
+    window.changeTheme(gender === 'boy' ? 'blue' : 'pink');
     
     // Optimistic local update so it shows the animation instantly no matter what!
     if (gender === 'boy') localVotesBoy++;
@@ -80,19 +79,19 @@ async function voteGender(gender) {
     
     // Save vote to Firebase
     try {
-        const pollRef = db.collection('nameGuesses').doc('poll_results');
+        const pollRef = doc(db, 'nameGuesses', 'poll_results');
         if (gender === 'boy') {
-            await pollRef.set({ boy: firebase.firestore.FieldValue.increment(1) }, { merge: true });
+            await setDoc(pollRef, { boy: increment(1) }, { merge: true });
         } else {
-            await pollRef.set({ girl: firebase.firestore.FieldValue.increment(1) }, { merge: true });
+            await setDoc(pollRef, { girl: increment(1) }, { merge: true });
         }
     } catch (e) {
         console.error("Error saving vote to Firebase: ", e);
     }
-}
+};
 
 // Guess Name logic
-async function guessName() {
+window.guessName = async function() {
     const input = document.getElementById('name-input');
     const feedback = document.getElementById('name-feedback');
     
@@ -115,27 +114,27 @@ async function guessName() {
         input.value = '';
         
         try {
-            await db.collection("nameGuesses").add({
+            await addDoc(collection(db, "nameGuesses"), {
                 name: name,
-                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                createdAt: serverTimestamp()
             });
             setTimeout(() => { feedback.textContent = ''; }, 4000);
         } catch (e) {
             console.error("Error adding name guess: ", e);
         }
     }
-}
+};
 
 // Allow Enter key to submit name guess
 const nameInputEl = document.getElementById('name-input');
 if (nameInputEl) {
     nameInputEl.addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') guessName();
+        if (e.key === 'Enter') window.guessName();
     });
 }
 
 // Theme Decorator logic
-function changeTheme(theme) {
+window.changeTheme = function(theme) {
     const root = document.documentElement;
     if (theme === 'pink') {
         root.style.setProperty('--pink', '#ffe6eb');
@@ -144,10 +143,10 @@ function changeTheme(theme) {
         root.style.setProperty('--pink', '#e6f2ff');
         root.style.setProperty('--blue', '#cce0ff');
     }
-}
+};
 
 // Surprise Box logic
-function openBox() {
+window.openBox = function() {
     const box = document.getElementById('surprise-box');
     const msg = document.getElementById('hidden-message');
     const inst = document.getElementById('box-instruction');
@@ -170,14 +169,13 @@ function openBox() {
             createSparkle(section);
         }
     }
-}
+};
 
 function createSparkle(parent) {
     const sparkle = document.createElement('div');
     sparkle.className = 'sparkle';
     sparkle.textContent = ['✨', '💫', '⭐️'][Math.floor(Math.random() * 3)];
     
-    // Random position around the center
     const rx = (Math.random() - 0.5) * 150;
     const ry = (Math.random() - 0.5) * 100 - 50;
     
@@ -186,7 +184,6 @@ function createSparkle(parent) {
     
     parent.appendChild(sparkle);
     
-    // Remove after animation
     setTimeout(() => {
         sparkle.remove();
     }, 1000);
@@ -194,7 +191,7 @@ function createSparkle(parent) {
 
 // Music logic
 let isPlaying = false;
-function toggleMusic() {
+window.toggleMusic = function() {
     const audio = document.getElementById('bg-music');
     const icon = document.getElementById('music-icon');
     
@@ -207,4 +204,4 @@ function toggleMusic() {
         icon.textContent = "🔊";
         isPlaying = true;
     }
-}
+};
