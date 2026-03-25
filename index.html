@@ -80,11 +80,15 @@
                 ✨ Boy — a name starting with S<br>
                 ✨ Girl — a name starting with N
             </p>
-            <div class="input-group">
-                <input type="text" id="name-input" placeholder="Type your guess...">
-                <button onclick="guessName()">Guess</button>
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 0.8rem; margin-bottom: 1rem;">
+                <input type="text" id="userName" placeholder="Your name or nickname 😊" style="width: 100%; max-width: 300px;">
+                <div class="input-group" style="margin-bottom: 0; width: 100%;">
+                    <input type="text" id="nameInput" placeholder="Type your guess...">
+                    <button id="nameBtn">Guess</button>
+                </div>
             </div>
             <p id="name-feedback" class="feedback"></p>
+
             <div class="guess-footer"
                 style="margin-top: 1.5rem; font-style: italic; color: #666; font-size: 0.95rem; line-height: 1.5;">
                 <p>"Your suggestion might become a name<br>we cherish forever ❤️"</p>
@@ -117,8 +121,10 @@
         <source src="music1.mp3" type="audio/mpeg">
     </audio>
 
-    <!-- Firebase Modular SDK -->
-    <script type="module" src="script.js"></script>
+    <!-- Firebase Compat SDK to allow running locally without a server -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
+    <script src="script.js"></script>
 </body>
 
 </html>
