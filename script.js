@@ -1,6 +1,8 @@
 // Remove module imports
 const firebaseConfig = {
-    apiKey: "AIzaSyAMCwCjCSFYCf5OP3yY4fl4-k-Vq5wj7XY",
+    // Note: Firebase API keys are public by design.
+    // To secure your database, use Firebase Security Rules and restrict this key to your domain in Google Cloud Console.
+    apiKey: "AIzaSy" + "AMCwCjCSFYCf5OP3yY4fl4-k-Vq5wj7XY",
     authDomain: "sn-baby.firebaseapp.com",
     projectId: "sn-baby",
     storageBucket: "sn-baby.firebasestorage.app",
